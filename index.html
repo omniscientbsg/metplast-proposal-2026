@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metplast Industries | Custom ERP, CRM & Service Application</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070709;
+            --surface: #101115;
+            --surface-border: #22242a;
+            --text-main: #f3f3f3;
+            --text-muted: #8a8d98;
+            --accent: #ccff00; /* Industrial high-vis yellow */
+            --accent-dim: rgba(204, 255, 0, 0.05);
+            --danger: #ff4a4a;
+            --danger-dim: rgba(255, 74, 74, 0.05);
+            --success: #10b981;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        
+        /* Typography */
+        h1, h2, h3, h4 { font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; }
+        .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+        .accent-text { color: var(--accent); }
+        
+        /* Hero */
+        header { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; position: relative; border-bottom: 1px solid var(--surface-border); }
+        .hero-label { margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
+        .hero-label::before { content: ''; display: block; width: 40px; height: 1px; background: var(--accent); }
+        h1 { font-size: clamp(3rem, 7vw, 6rem); line-height: 0.9; margin-bottom: 2rem; letter-spacing: -0.04em; }
+        .hero-sub { font-size: 1.3rem; color: var(--text-muted); font-weight: 300; max-width: 800px; line-height: 1.5; margin-bottom: 2rem;}
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; border-top: 1px solid var(--surface-border); padding-top: 2rem; margin-top: 2rem;}
+        .meta-item span { display: block; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.3rem;}
+        .meta-item strong { display: block; color: var(--text-main); font-size: 1.1rem; font-weight: 400;}
+
+        /* Sections */
+        section { padding: 6rem 0; border-bottom: 1px solid var(--surface-border); }
+        .section-header { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; margin-bottom: 4rem; align-items: start; }
+        .section-title { font-size: 2.2rem; line-height: 1.1; }
+        .section-desc { font-size: 1.2rem; color: var(--text-muted); font-weight: 300; }
+        .section-desc p { margin-bottom: 1.5rem; }
+
+        /* Alert / Status Boxes */
+        .status-box { background: var(--surface); border-left: 4px solid var(--accent); padding: 2rem 3rem; margin: 2rem 0; }
+        .status-box.danger { border-left-color: var(--danger); background: var(--danger-dim); }
+        .status-box.success { border-left-color: var(--success); background: rgba(16, 185, 129, 0.05); }
+        .status-box h3 { margin-bottom: 1rem; font-size: 1.2rem; }
+        .status-box p { color: var(--text-muted); font-size: 1.1rem; }
+        .status-box ul { margin-top: 1rem; color: var(--text-muted); padding-left: 1.5rem; }
+        .status-box li { margin-bottom: 0.8rem; }
+
+        /* Grid Cards */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 2rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .card { background: var(--surface); border: 1px solid var(--surface-border); padding: 3rem; transition: transform 0.4s ease, border-color 0.4s ease; position: relative; overflow: hidden; }
+        .card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .card:hover { transform: translateY(-3px); border-color: #333; }
+        .card:hover::after { transform: scaleX(1); }
+        .card h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+        .card p { color: var(--text-muted); margin-bottom: 1.5rem; }
+        .card ul { list-style: none; }
+        .card ul li { margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative; color: var(--text-main); font-size: 1rem; }
+        .card ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: var(--surface); }
+        th, td { padding: 1.2rem 1.5rem; text-align: left; border-bottom: 1px solid var(--surface-border); }
+        th { font-family: 'JetBrains Mono', monospace; color: var(--accent); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; font-weight: normal; }
+        td { color: var(--text-muted); font-size: 1.05rem; }
+        td strong { color: var(--text-main); font-weight: 600; display: block; margin-bottom: 0.2rem;}
+        tr:last-child td { border-bottom: none; }
+        
+        .compare-table th { background: #16181d; font-size: 1rem; }
+        .compare-table td:nth-child(2) { color: #ff8888; background: rgba(255, 74, 74, 0.02); border-left: 1px solid var(--surface-border); }
+        .compare-table td:nth-child(3) { color: #e6ff80; background: rgba(204, 255, 0, 0.02); border-left: 1px solid var(--surface-border); border-right: 1px solid var(--surface-border); }
+
+        /* Terms & Signoff */
+        .terms-list { counter-reset: terms-counter; margin-top: 2rem; }
+        .terms-list li { position: relative; padding-left: 3rem; margin-bottom: 2rem; list-style: none; color: var(--text-muted); }
+        .terms-list li::before { counter-increment: terms-counter; content: "0" counter(terms-counter) "."; position: absolute; left: 0; font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+        .terms-list li strong { color: var(--text-main); display: block; margin-bottom: 0.5rem; font-size: 1.2rem;}
+        
+        .signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 5rem; }
+        .sig-box { padding-top: 2rem; }
+        .sig-line { border-bottom: 1px solid var(--text-muted); height: 60px; margin-bottom: 1rem; }
+        .sig-name { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.9rem; text-transform: uppercase; }
+        .sig-title { color: var(--text-muted); font-size: 0.9rem; }
+
+        footer { padding: 4rem 0; text-align: center; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        @media (max-width: 900px) {
+            .section-header { grid-template-columns: 1fr; gap: 2rem; }
+            h1 { font-size: 3.5rem; }
+            .card { padding: 2rem; }
+            .signature-grid { grid-template-columns: 1fr; }
+            .compare-table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="hero-label mono">Exhaustive Technical Proposal</div>
+            <h1>METPLAST<br><span class="accent-text">INDUSTRIES</span></h1>
+            <p class="hero-sub">Custom Enterprise Resource Planning (ERP), CRM & Service Application Platform. To replace ERPNext with a fully custom, industry-specific technology platform that covers every operational domain.</p>
+            
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <span>Client</span>
+                    <strong>Metplast Industries Pvt. Ltd. (Khopoli)</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Contact</span>
+                    <strong>Mr. Arnab Rodia</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Prepared By</span>
+                    <strong>Baljinder Singh</strong>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: CURRENT STATE & REALITY CHECK -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">01. The Monolith Trap:<br>ERPNext Reality Check</h2>
+                <div class="section-desc">
+                    <p>Metplast currently operates on ERPNext—a generic, open-source platform. While it provides baseline accounting, it is structurally flawed when forced to manage complex field logistics, mobile operations, and custom manufacturing intelligence.</p>
+                </div>
+            </div>
+
+            <div class="status-box danger">
+                <h3 style="color: var(--danger);">Where ERPNext Falls Short (Documented Gaps)</h3>
+                <p>The system fundamentally fails when extended to physical field operations:</p>
+                <ul>
+                    <li><strong>Mobile App Officially Deprecated:</strong> The Frappe team formally announced deprecation of native mobile apps in Dec 2021. The official position is 'use the mobile browser.' This means no native push notifications, no offline capability, and no reliable QR scanning.</li>
+                    <li><strong>Gantt Chart Bugs:</strong> Documented GitHub Issue #19348 and #40818 show the Gantt chart handles snap incorrectly, and moving tasks can recursively reset dependent timelines.</li>
+                    <li><strong>2,000+ Open GitHub Issues:</strong> Bug fixes are prioritized by the core team on their schedule; businesses cannot escalate critical operational bugs.</li>
+                    <li><strong>Updation Fragility:</strong> ERPNext major versions (v14 → v15 → v16) change database structures significantly. Version upgrades consistently break custom modifications, leaving you locked into outdated versions.</li>
+                    <li><strong>No Purpose-Built Service App:</strong> There is no mobile-first, offline-capable app for field technicians to receive jobs, scan parts, and capture digital customer sign-offs.</li>
+                </ul>
+            </div>
+
+            <h3 style="font-size: 1.5rem; margin-top: 4rem; margin-bottom: 1.5rem;">Head-to-Head Architectural Comparison</h3>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Operational Capability</th>
+                        <th style="width: 35%; color: var(--danger);">Vanilla ERPNext</th>
+                        <th style="width: 35%; color: var(--accent);">Metplast Custom OS (Next.js)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>User Interface (UI)</strong></td>
+                        <td>Generic UI with 50+ irrelevant tabs causing severe cognitive fatigue for operators.</td>
+                        <td><strong>Role-Based Micro-Dashboards.</strong> Operators only see what they need (e.g., Floor Manager sees only Work Orders & OEE).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile Strategy</strong></td>
+                        <td>Deprecated native apps. Forces field workers to use a clunky mobile web browser.</td>
+                        <td><strong>Native React Native Android APKs.</strong> Fast, intuitive, big-button UI designed for rugged field conditions.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Offline Field Resilience</strong></td>
+                        <td>Fails immediately if 4G connection drops. Data loss occurs.</td>
+                        <td><strong>SQLite Queue Caching.</strong> Works flawlessly offline in basements/remote sites, syncing automatically upon reconnection.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accounting & Auditing</strong></td>
+                        <td>Traps financial data inside its own proprietary ledger system.</td>
+                        <td><strong>Tally-Ready Export.</strong> Instantly export invoices/ledgers in CSV/XML specifically formatted for your CA's Tally software.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Developer Availability</strong></td>
+                        <td>Frappe/Python developers are scarce, expensive, and create "Hit-by-a-bus" lock-in.</td>
+                        <td><strong>Next.js / Node.js.</strong> Built on the world's most ubiquitous, easily-sourceable JavaScript framework.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION 2: PROPOSED ARCHITECTURE & TECH STACK -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">02. Proposed<br>Architecture</h2>
+                <div class="section-desc">
+                    <p>We propose a 100% bespoke Next.js and React Native architecture. This approach allows us to harvest the core accounting logic of an ERP, while stripping away the generic bloat.</p>
+                </div>
+            </div>
+
+            <div class="status-box">
+                <h3 style="color: var(--accent);">The Metplast Paradigm: Matching the Core, Stripping the Bloat</h3>
+                <p>We are not removing enterprise functionality; we are refining it. We will engineer the entire core of what makes ERPNext useful—General Ledger Accounting, Multi-level BOMs, Inventory GRNs, and Work Orders—but tailored exclusively to poultry equipment manufacturing.</p>
+                <p style="margin-top: 1rem;">Instead of forcing your team to navigate a generic interface, we map the software directly to Metplast's physical factory floor. The logic is as powerful as an enterprise ERP, but the execution is flawlessly simple.</p>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Technology Stack</th>
+                        <th>Architectural Justification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Web Frontend</strong></td>
+                        <td>React.js / Next.js</td>
+                        <td>Lightning fast, SEO-friendly, component-based UI.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile (Android)</strong></td>
+                        <td>React Native (Shared Codebase)</td>
+                        <td>Single codebase powering the ERP Field App and the Service Apps.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Backend API</strong></td>
+                        <td>Node.js (Express / Fastify)</td>
+                        <td>High-performance REST & WebSocket API.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Database</strong></td>
+                        <td>PostgreSQL</td>
+                        <td>ACID-compliant relational database ensuring absolute financial data integrity.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cache / Queue</strong></td>
+                        <td>Redis + Bull Queue</td>
+                        <td>Handles real-time notifications and massive background job concurrency.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>File Storage</strong></td>
+                        <td>AWS S3 (Mumbai Region)</td>
+                        <td>Secure housing for documents, QR labels, and quotation PDFs.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integrations</strong></td>
+                        <td>Telegram Bot API & Custom QR Engine</td>
+                        <td>Handles real-time lead routing alerts and ML Kit camera-based QR scanning.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION 3: MODULE SPECIFICATIONS -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">03. Unified Module<br>Specifications</h2>
+                <div class="section-desc">
+                    <p>A breakdown of the 6 core systems. Unlike generic ERPs, these modules are heavily interlinked to automate data flow across departments, drastically extending operational capabilities.</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 3rem; padding: 2.5rem; border-color: var(--surface-border);">
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">The Unified Data Sync & Role-Based Dashboards</h3>
+                <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 1rem;">Everything is connected. Nothing is cluttered.</p>
+                <p style="color: var(--text-muted);">In generic ERPs, every user sees everything, leading to massive UI fatigue. We employ <strong>Role-Specific Micro-Dashboards</strong>. The CFO's dashboard only surfaces Cash Flow and Receivables. The Floor Manager's dashboard only shows Machine OEE and Active Work Orders.</p>
+                <p style="color: var(--text-muted); margin-top: 1rem;">Yet, underneath, the data is flawlessly synced: a Telegram lead conversion instantly generates a quotation, which calculates a BOM, reserves inventory, and plots a Gantt timeline. The workflow is automated, and the user interface remains perfectly clean.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <span class="mono">M1. Accounts & Finance</span>
+                    <h3 style="margin-top: 1rem;">Core Ledger</h3>
+                    <ul>
+                        <li>General ledger, trial balance, and chart of accounts.</li>
+                        <li><strong>Tally-Ready Export:</strong> Instantly generate CSV/XML files of sales/purchase ledgers for your CA's Tally software.</li>
+                        <li>GST Compliance: GSTR-1, GSTR-3B ready reports, HSN mapping.</li>
+                        <li>Live financial KPIs: revenue vs target, cash position.</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <span class="mono">M2. Marketing & CRM</span>
+                    <h3 style="margin-top: 1rem;">Lead Management</h3>
+                    <ul>
+                        <li>Multi-source intake (Web, WhatsApp, Walk-in) auto-timestamped.</li>
+                        <li><strong>Telegram Bot Routing:</strong> Instant alert to admin group with inline 'Assign' buttons.</li>
+                        <li>360° Customer Profiles tracking quotes, orders, and service requests.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="mono">M3. Sales</span>
+                    <h3 style="margin-top: 1rem;">Quotation & Pipeline</h3>
+                    <ul>
+                        <li><strong>Cage Layout Engine:</strong> Auto-calculates layout from shed dimensions and outputs diagram PDF.</li>
+                        <li>Branded PDF Output combining quote and layout.</li>
+                        <li>Confirmed quotation auto-triggers production work orders.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="mono">M4. Production & Manufacturing</span>
+                    <h3 style="margin-top: 1rem;">Shop Floor Execution</h3>
+                    <ul>
+                        <li>Multi-level BOM builder with raw materials and wastage factors.</li>
+                        <li>Shop Floor Tasks assigned directly to operators.</li>
+                        <li>Quality Checkpoints logging pass/fail with notes and photos.</li>
+                        <li>Actual vs planned material consumption auto-adjusts stock.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="mono">M5. Inventory & Warehouse</span>
+                    <h3 style="margin-top: 1rem;">Material Tracking</h3>
+                    <ul>
+                        <li><strong>Hardware-Agnostic QR:</strong> Generate QR labels for Zebra/TVS printers; scan seamlessly with standard Android smartphone cameras (ML Kit).</li>
+                        <li>Scan-on-Loading via Android App (timestamped).</li>
+                        <li>Scan-on-Offloading via Field App (GPS-tagged with customer signature).</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <span class="mono">M6. Service & Project App</span>
+                    <h3 style="margin-top: 1rem;">Delivery & Installation</h3>
+                    <ul>
+                        <li><strong>Offline Idle-Time & Progress Tracking:</strong> Forces step-by-step milestone check-ins with hardware-locked timestamps, exposing unexplained field idle time even without an active internet connection.</li>
+                        <li><strong>Ad-Network & Organic Lead Sync:</strong> Direct API hooks into Google Ads, Facebook Lead Forms, and website forms. Bypasses manual entry and instantly injects leads into the sales assignment pipeline.</li>
+                        <li>Milestone tracking from Survey to Production to Installation.</li>
+                        <li>Daily progress logs and photo uploads directly from the site.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: DIFFERENTIATORS -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">04. Specialisation &<br>Differentiators</h2>
+                <div class="section-desc">
+                    <p>Deep dives into the bespoke workflow engines that provide Metplast with an insurmountable operational advantage.</p>
+                </div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color: var(--accent);">Telegram Bot Lead Routing</h3>
+                    <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 1rem;">Drops lead response time from hours to under 2 minutes.</p>
+                    <p style="color: var(--text-muted);">Lead arrives and system dispatches a formatted Telegram message to the admin group with inline buttons [Assign to Ravi]. Admin taps, and the salesperson receives an instant notification with a deep link to the CRM record. If unassigned for 30 mins, the bot escalates.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 style="color: var(--accent);">Cage Layout Auto-Generator</h3>
+                    <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 1rem;">Turns 3 hours of manual quotation work into 5 minutes.</p>
+                    <p style="color: var(--text-muted);">Sales user inputs Shed Length × Width, Floors, Target Capacity. System calculates optimal rows, walkway clearances, feed line positioning, and generates a visual SVG/PDF diagram automatically embedded into the Metplast-branded quote.</p>
+                </div>
+
+                <div class="card">
+                    <h3 style="color: var(--accent);">QR Material Lifecycle Tracking</h3>
+                    <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 1rem;">Eliminates material disputes and establishes a chain-of-custody.</p>
+                    <p style="color: var(--text-muted);">Stage 1: Generate QR at production. Stage 2: Warehouse scans to log loading to vehicle. Stage 3: Field team scans at customer site to log GPS-verified offloading with digital signature. Management views complete audit trail.</p>
+                </div>
+
+                <div class="card">
+                    <h3 style="color: var(--accent);">Task Assignment & Feedback Loop</h3>
+                    <p style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 1rem;">Every task becomes a documented, accountable thread.</p>
+                    <p style="color: var(--text-muted);">Assignee receives a task and must respond: ACCEPT, FLAG CONCERN, PROPOSE ALTERNATE TIMELINE, or REQUEST REASSIGNMENT. Eliminates verbal "I thought you were doing it" situations with full audit trails.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: TIMELINE (NO QUOTATION) -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">05. Project<br>Delivery Timeline</h2>
+                <div class="section-desc">
+                    <p>Estimated 22-26 Weeks | Iterative Delivery with Milestone Sign-offs.</p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Timeline</th>
+                        <th>Scope & Deliverables</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>P1: Architecture</strong></td>
+                        <td>Weeks 1 - 3</td>
+                        <td>Detailed SRS document, DB schema, API design. Deliverable: Signed-off SRS.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P2: Core Platform</strong></td>
+                        <td>Weeks 4 - 8</td>
+                        <td>Backend API, Accounts (GL, GST), CRM with Telegram Bot. Deliverable: Working Accounts + CRM demo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P3: Manufacturing</strong></td>
+                        <td>Weeks 9 - 13</td>
+                        <td>Sales (Cage Layout Engine), Production (BOM, Shop Floor), Inventory (QR System). Deliverable: Full Sales-to-Production demo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P4: Projects</strong></td>
+                        <td>Weeks 14 - 17</td>
+                        <td>Project Management, Gantt Chart, Task Two-Way Feedback. Deliverable: Complete Project module demo.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P5: Service App</strong></td>
+                        <td>Weeks 18 - 21</td>
+                        <td>Customer Android App and Technician Android App (Offline sync). Deliverable: Functional Service APKs.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P6 & P7: UAT & Launch</strong></td>
+                        <td>Weeks 22 - 26</td>
+                        <td>Data migration (2 years ERPNext data), UAT, Training, and 4-week hypercare go-live support.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION 6: COMMERCIAL TERMS -->
+    <section style="border-bottom: none;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">06. Commercial Terms &<br>Sign Off</h2>
+                <div class="section-desc">
+                    <p>Standard operating terms covering intellectual property, hosting, and project boundaries.</p>
+                </div>
+            </div>
+
+            <ul class="terms-list">
+                <li>
+                    <strong>Intellectual Property & Sovereignty</strong>
+                    100% source code, database schemas, and documentation are transferred to Metplast Industries upon receipt of final payment.
+                </li>
+                <li>
+                    <strong>Data Migration</strong>
+                    Migration covers the last 2 financial years of existing ERPNext data. 
+                </li>
+                <li>
+                    <strong>Scope Creep & Change Requests</strong>
+                    Scope is defined by the SRS document signed off in Phase 1. Any additions post sign-off are managed via a formal Change Request (CR) process.
+                </li>
+                <li>
+                    <strong>Warranty & Hosting</strong>
+                    12-month post go-live warranty on both platforms for bug fixes. Cloud hosting costs post Year 1 are on Metplast's account.
+                </li>
+            </ul>
+
+            <div class="signature-grid">
+                <div class="sig-box">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Mr. Arnab Rodia</div>
+                    <div class="sig-title">Metplast Industries Pvt. Ltd.</div>
+                </div>
+                <div class="sig-box">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Baljinder Singh</div>
+                    <div class="sig-title">Project Manager | Technology Solutions</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            Metplast Industries // Architectural Proposal // MPL-TECH-2025 // Highly Confidential
+        </div>
+    </footer>
+
+</body>
+</html>
